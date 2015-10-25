@@ -21,6 +21,7 @@ public class excelutil {
 			
 			String name=sheet.getCell(0, 0).getContents();
 			String phonenumber=sheet.getCell(1, 0).getContents();
+		
 			for(int x=1;x<sheet.getRows();x++){
 				Map<String,String>map=new HashMap<String, String>();
 						map.put(name, sheet.getCell(0, x).getContents());
@@ -37,5 +38,22 @@ public class excelutil {
 			wb.close();
 		}
 		return rs;
+	}
+	public static int getExcelcounts(String path){
+		Workbook wb=null;
+		try {
+			wb = Workbook.getWorkbook(new File(path));
+			Sheet sheet=wb.getSheet(0);
+			return sheet.getRows()-1;
+		} catch (BiffException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			wb.close();
+		}
+		return 0;
 	}
 }

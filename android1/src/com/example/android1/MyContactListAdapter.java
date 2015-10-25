@@ -1,11 +1,17 @@
 package com.example.android1;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import com.example.tools.ContactsUtil;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,11 +100,14 @@ public void delete(ContactsUtil cutil){
 	for(Entry<Integer,Boolean> e:this.checkstatus.entrySet()){
 		if(e.getValue()){
 			indexs.add(e.getKey());
+			
 		}
 	}
 	if (indexs.size()==0){
 		return;
 	}
+	Collections.sort(indexs);
+	
 	int size=indexs.size();
 	int tmp=size;
 	for(Integer index:indexs){
@@ -116,7 +125,7 @@ public void delete(ContactsUtil cutil){
 					this.localphones.remove(index.intValue()-tm);	
 					tmp--;
 				}
-			continue;
+			break;
 		}
 	}
 }

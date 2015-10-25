@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -232,8 +233,8 @@ public class MainActivity extends Activity {
 		dpd.dismiss();
 	}
 	class LoadFile extends AsyncTask<String, String, String>{
-		int finishfile=1;
-		int prog=0;
+//		int finishfile=1;
+		double prog=1;
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
@@ -244,24 +245,37 @@ public class MainActivity extends Activity {
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			Map<String,String>localphones=cutil.getAllPhones();
+			int total=0;
+			for (String path:results) {
+			total+=excelutil.getExcelcounts(path);
+			}
 			for (String path:results) {
 			List<Map<String,String>>rs=excelutil.readExcel(path);
-			
 			for (int i=0;i<rs.size();i++) {
 				
 				String phonevalue=rs.get(i).get("手机");
 				if(localphones.containsKey(phonevalue)){
 					rs.remove(i);
 					i--;
+					total--;
 				}
 			}
-			boolean writeresult=cutil.writeContacts(rs);
-			if(! writeresult){
-				return "failed";
+//			boolean writeresult=cutil.writeContacts(rs);
+//			if(! writeresult){
+//				return "failed";
+//			}
+//			prog=(int)100/results.size()*finishfile;
+//			publishProgress(""+prog);
+//			finishfile+=1;
+			Log.i("result tag","---total--->"+total);
+			for(int i=0;i<rs.size();i++){
+				cutil.writeContactsUpdate(rs.get(i));
+				
+				publishProgress(""+(int)(prog/total*100));
+				
+				Log.i("result tag","------>"+(int)(prog/total*100));
+				prog+=1;
 			}
-			prog=(int)100/results.size()*finishfile;
-			publishProgress(""+prog);
-			finishfile+=1;
 		}
 			return "succeed";
 		}

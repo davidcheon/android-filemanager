@@ -80,6 +80,30 @@ public boolean writeContacts(List<Map<String,String>> values){
 	}
 	return true;
 	}
+public boolean writeContactsUpdate(Map<String,String> map){
+	try{
+	String phonenumber=map.get("手机");
+	String name=map.get("姓名");
+	Uri uri = Uri.parse("content://com.android.contacts/raw_contacts");
+    ContentValues cv = new ContentValues();  
+    long contactid = ContentUris.parseId(this.contentresolver.insert(uri, cv));  
+    uri = Uri.parse("content://com.android.contacts/data");  
+    cv.put("raw_contact_id", contactid);  
+    cv.put("mimetype", "vnd.android.cursor.item/name");  
+    cv.put("data2", name);  
+    this.contentresolver.insert(uri, cv);  
+    cv.clear();  
+    cv.put("raw_contact_id", contactid);  
+    cv.put("mimetype", "vnd.android.cursor.item/phone_v2");  
+    cv.put("data2", "2");  
+    cv.put("data1", phonenumber);  
+    this.contentresolver.insert(uri, cv);
+	}catch(Exception e){
+		e.printStackTrace();
+		return false;
+	}
+	return true;
+	}
 public List<Map<String,String>> getAllPhonesAsList(){
 	List<Map<String,String>> tmp=new ArrayList<Map<String,String>>();
 	Map<String,String> map=getAllPhones();

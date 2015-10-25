@@ -24,7 +24,7 @@ public class MyFileManager extends ListActivity {
 	private String rootpath="/sdcard/Download";
 	private List<String> items=null;
 	private List<String> paths=null;
-	private MyListAdapter madapter=null;
+	private MySelectFileListAdapter madapter=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -84,7 +84,7 @@ public class MyFileManager extends ListActivity {
 			items.add(file.getName());
 			paths.add(file.getAbsolutePath());
 		}
-		setListAdapter(madapter=new MyListAdapter(this,items,paths));
+		setListAdapter(madapter=new MySelectFileListAdapter(this,items,paths));
 	}
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
